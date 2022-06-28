@@ -1,0 +1,128 @@
+name: hyper_focus
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #camera: ^0.8.0
+  path_provider: ^2.0.10
+  path: ^1.8.0
+  font_awesome_flutter: ^10.1.0
+  blurrycontainer: ^1.0.2
+  flutter_svg: ^1.0.3
+  local_auth: ^2.1.0
+  system_alert_window: ^1.1.1
+  image_picker: ^0.7.3
+  provider: ^6.0.3
+  firebase_core: ^1.17.1
+  firebase_auth: ^3.3.19
+  firebase_storage: ^10.2.18
+  cloud_firestore: ^3.1.18
+  uuid: ^3.0.6
+  syncfusion_flutter_charts: ^20.1.61
+  freerasp: ^2.0.0
+  syncfusion_flutter_gauges: ^20.1.61
+
+  #firebase_ml_vision : ^0.9.10
+  #flutter_camera_ml_vision: ^2.2.4
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  assets:
+    - assets/icons/Logo.svg
+    - assets/icons/facebook.png
+    - assets/icons/external-link.png
+    - assets/icons/user.png
+    - assets/icons/flag.png
+    - assets/icons/time.png
+    - assets/icons/100.png
+    - assets/icons/Ellipse 72.png
+    - assets/icons/celebrate.png
+    - assets/icons/check-mark.png
+    - assets/icons/like.png
+    - assets/icons/verified.png
+    - assets/icons/file-checked.png
+    - assets/icons/book.png
+    - assets/icons/wandering-emoji.png
+    - assets/icons/hash.png
+    - assets/icons/plus.png
+    - assets/icons/settings.png
+    - assets/icons/video.png
+    - assets/icons/eye-no.png
+    - assets/icons/google.png
+    - assets/icons/microsoft.png
+    - assets/images/splash.png
+    - assets/images/splash_screen.png
+    - assets/images/calculus II.png
+    - assets/images/dr mahmoud sami.jpeg
+    - assets/images/dr hakam.png
+    - assets/images/more people.png
+    - assets/icons/chevrons-bottom.png
+    - assets/images/dr ahmed donkel.png
+    - assets/images/mr Hadad.jpeg
+    - assets/images/no-profile-image-24.jpg
+
+
+  uses-material-design: true
+
+  fonts:
+    - family: SF UI Display
+      fonts:
+        - asset: assets/fonts/SF-UI-Display-Regular.ttf
+    - family: AvantGarde Bk BT
+      fonts:
+        - asset: assets/fonts/AvantGarde Demi BT.TTF
+
+    - family: SF Pro Display
+      fonts:
+        - asset: assets/fonts/SF-Pro-Display-Regular.otf
+          weight: 400
+        - asset: assets/fonts/SF-Pro-Display-Medium.otf
+          weight: 500
+        - asset: assets/fonts/SF-Pro-Display-Semibold.otf
+          weight: 600
+        - asset: assets/fonts/SF-Pro-Display-Bold.otf
+          weight: 700
+
+    - family: SF Pro Text
+      fonts:
+        - asset: assets/fonts/SF-Pro-Text-Regular.otf
+          weight: 400
+        - asset: assets/fonts/SF-Pro-Text-RegularItalic.otf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/SF-Pro-Text-Medium.otf
+          weight: 500
+        - asset: assets/fonts/SF-Pro-Text-Bold.otf
+          weight: 700
+        - asset: assets/fonts/SF-Pro-Text-Semibold.otf
+          weight: 600
+        - asset: assets/fonts/SF-Pro-Text-SemiboldItalic.otf
+          weight: 600
+          style: italic

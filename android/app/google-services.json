@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "56765698084",
+    "project_id": "hyper-focus-f5e5c",
+    "storage_bucket": "hyper-focus-f5e5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56765698084:android:ab6616f0abefd08fd5c8b1",
+        "android_client_info": {
+          "package_name": "com.example.hyper_focus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56765698084-lq5i197sqsu1mtklk080405339g168v6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSsJ0Oq8skev01Lt-V_K8og_PFqR-m3MM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56765698084-lq5i197sqsu1mtklk080405339g168v6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
