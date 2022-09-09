@@ -23,10 +23,13 @@ class GetUserData {
         .doc(uid)
         .get()
         .then((results) {
-      return [uid, results["username"], results["email"], results["image_url"]];
+      return {
+        "userId": uid,
+        "userName": results["username"],
+        "userEmail": results["email"],
+        "userImageUrl": results["image_url"],
+        "enrolled courses": results["enrolled courses"],
+      };
     });
   }
 }
-//userName = results["username"];
-//print(userName);
-//imageUrl = results["image_url"];

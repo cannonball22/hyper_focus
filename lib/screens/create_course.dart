@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hyper_focus/screens/course_confirm_screen.dart';
 import 'package:hyper_focus/widgets/blurry_title.dart';
 import 'package:uuid/uuid.dart';
+import '../services/get_user_data.dart';
 
 class CreateCourse extends StatefulWidget {
   const CreateCourse({Key? key}) : super(key: key);
@@ -24,7 +25,6 @@ class _CreateCourseState extends State<CreateCourse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff1C1C1E),
       appBar: const BlurryTitle(title: "Create New Course"),
       body: SingleChildScrollView(
         child: Column(
@@ -257,6 +257,27 @@ class _CreateCourseState extends State<CreateCourse> {
                           borderRadius: BorderRadius.circular(16)),
                       child: TextButton(
                         onPressed: () {
+                          Future<bool> _joinCourse(String courseID) async {
+                            final isValid = _formKey.currentState?.validate();
+                            FocusScope.of(context).unfocus();
+                            if (isValid != null &&
+                                isValid &&
+                                _formKey.currentState != null) {
+                              await FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(GetUserData.getUserId())
+                                  .update(
+                                {
+                                  "enrolled courses":
+                                      FieldValue.arrayUnion([courseID]),
+                                },
+                              );
+                              return true;
+                            }
+                            return false;
+                          }
+
+                          _joinCourse(uuid);
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => CourseConfirm(
@@ -292,10 +313,10 @@ class _CreateCourseState extends State<CreateCourse> {
   }
 
   Widget buildSegment(String text) => Container(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.normal,
               letterSpacing: -0.08,

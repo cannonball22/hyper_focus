@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:system_alert_window/system_alert_window.dart';
-
+import '../services/get_user_data.dart';
 import '../services/auth.dart';
 import '../widgets/blurry_title.dart';
 import '../widgets/on_boarding_instructions.dart';
@@ -26,105 +26,81 @@ class OnBoardingScreen extends StatelessWidget {
     String? userName;
 
     final FirebaseAuth auth = FirebaseAuth.instance;
-    print("THIS IS CURRENT SESSION ID ${sessionId}");
+    //print("THIS IS CURRENT SESSION ID ${sessionId}");
 
     return Scaffold(
-      backgroundColor: const Color(0xff1C1C1E),
       appBar: BlurryTitle(title: courseName),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const OnBoardingInstructions(),
-            const SizedBox(
-              height: 16,
-            ),
-            Align(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: double.infinity),
-                child: TextButton(
-                  onPressed: () async {
-                    //implement biometric auth here
-                    bool isAuthenticated = await AuthService.authenticateUser();
-                    //_cameras = await availableCameras();
-                    /*
-                    SystemAlertWindow.showSystemWindow(
-                      margin: SystemWindowMargin(left: 50),
-                      gravity: SystemWindowGravity.CENTER,
-                      header: SystemWindowHeader(
-                        decoration: SystemWindowDecoration(
-                          startColor: Colors.red,
-                        ),
-                        title: SystemWindowText(text: "header"),
-                      ),
-                      body: SystemWindowBody(),
-                      height: 100,
-                    );
-*/
-                    if (isAuthenticated) {
-                      user = auth.currentUser;
-                      userUID = user?.uid;
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const OnBoardingInstructions(),
+              const SizedBox(
+                height: 16,
+              ),
+              Align(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minWidth: double.infinity),
+                  child: TextButton(
+                    onPressed: () {
+                      //implement biometric auth here
 
-                      await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(userUID)
-                          .get()
-                          .then((results) {
-                        userName = results["username"];
+                      GetUserData.getUserData().then((results) {
                         userEmail = results["email"];
+                        userName = results["username"];
                       });
-                      await FirebaseFirestore.instance
+                      FirebaseFirestore.instance
                           .collection('courses')
                           .doc(courseUID)
                           .collection('sessions')
                           .doc(sessionId)
-                          .collection("Attendees")
-                          .doc(userUID)
+                          .collection("participants")
+                          .doc(GetUserData.getUserId())
                           .set({
                         "attendance": true,
                         "quiz grade": 0,
-                        "student UID": userUID,
+                        "hyper focus": 0,
+                        "student UID": GetUserData.getUserId(),
                         "student email": userEmail,
                         "student name": userName,
                       });
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              LiveSession(courseName: courseName),
+                          builder: (context) => LiveSession(
+                            courseName: courseName,
+                            courseID: courseUID,
+                            sessionID: sessionId,
+                          ),
                         ),
                       );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Authentication failed.'),
+                    },
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13.0),
+                          ),
                         ),
-                      );
-                    }
-                  },
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13.0),
-                        ),
-                      ),
-                      padding: MaterialStateProperty.resolveWith((states) =>
-                          const EdgeInsets.only(
-                              left: 25, right: 25, top: 18, bottom: 18)),
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) => const Color(0xff2C2C2E))),
-                  child: const Text(
-                    "Grant Permission",
-                    style: TextStyle(
-                        fontSize: 20,
-                        //fontWeight: FontWeight.BOLD,
-                        fontFamily: "SF Pro Text"),
+                        padding: MaterialStateProperty.resolveWith((states) =>
+                            const EdgeInsets.only(
+                                left: 25, right: 25, top: 18, bottom: 18)),
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => const Color(0xff2C2C2E))),
+                    child: const Text(
+                      "Grant Permission",
+                      style: TextStyle(
+                          fontSize: 20,
+                          //fontWeight: FontWeight.BOLD,
+                          fontFamily: "SF Pro Text"),
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

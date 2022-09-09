@@ -41,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
     TextEditingController _passwordController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: Color(0xff1C1C1E),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: SvgPicture.asset('assets/icons/Logo.svg'),

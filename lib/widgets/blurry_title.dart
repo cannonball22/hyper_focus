@@ -9,7 +9,7 @@ class BlurryTitle extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color(0xff1C1C1E),
       title: Text(
         title,
         style: const TextStyle(

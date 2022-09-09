@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../screens/course_details.dart';
 
@@ -9,7 +10,7 @@ class CourseCard extends StatelessWidget {
     required this.instructorName,
     required this.courseDate,
     required this.instructorImage,
-    required this.courseUID,
+    required this.courseID,
     required this.courseDescription,
     required this.courseColor,
     required this.instructorUID,
@@ -17,7 +18,7 @@ class CourseCard extends StatelessWidget {
   final String courseName;
   final String instructorName;
   final String courseDate;
-  final String courseUID;
+  final String courseID;
   final String instructorImage;
   final String courseDescription;
   final int courseColor;
@@ -35,7 +36,7 @@ class CourseCard extends StatelessWidget {
               courseName: courseName,
               instructorName: instructorName,
               instructorImage: instructorImage,
-              courseUID: courseUID,
+              courseID: courseID,
               courseDescription: courseDescription,
               courseColor: courseColor,
               instructorID: instructorUID,
@@ -120,8 +121,41 @@ class CourseCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
+                    PopupMenuButton<int>(
+                      color: Color(0xff3A3A3C),
+                      onSelected: (item) => onSelected(context, item),
+                      itemBuilder: (context) => [
+                        PopupMenuItem<int>(
+                          value: 0,
+                          child: Row(
+                            children: [
+                              Icon(Icons.copy, color: Colors.white),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "Copy to clipboard",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem<int>(
+                          value: 1,
+                          child: Row(
+                            children: [
+                              Icon(Icons.settings, color: Colors.white),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "Modify",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                       icon: const Icon(Icons.more_vert,
                           size: 24, color: Color(0xff1F89FD)),
                     )
@@ -133,6 +167,20 @@ class CourseCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        Clipboard.setData(ClipboardData(text: courseID));
+        const snackBar = SnackBar(
+          content: Text('Course ID is copied to your clipboard'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        break;
+      case 1:
+        break;
+    }
   }
 }
 

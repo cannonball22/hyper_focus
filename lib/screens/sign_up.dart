@@ -25,7 +25,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     var _isLogin = true;
 
     return Scaffold(
-      backgroundColor: const Color(0xff1C1C1E),
       body: Padding(
         padding: const EdgeInsets.only(left: 24, right: 24),
         child: SingleChildScrollView(

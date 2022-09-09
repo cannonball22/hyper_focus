@@ -26,7 +26,6 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BlurryTitle(title: "Start a new session"),
-      backgroundColor: const Color(0xff1C1C1E),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -191,7 +190,7 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
                         builder: (context) => LiveStat(
                           courseName: widget.courseName,
                           courseID: widget.courseID,
-                          sessionId: sessionID,
+                          sessionID: sessionID,
                         ),
                       ),
                     );

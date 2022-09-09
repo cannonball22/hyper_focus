@@ -17,7 +17,7 @@ class OnBoardingInstructions extends StatelessWidget {
       //height: 500,
       child: Padding(
         padding:
-            const EdgeInsets.only(left: 32.0, right: 32, bottom: 16, top: 16),
+            const EdgeInsets.only(left: 32, right: 32, bottom: 16, top: 16),
         child: Column(
           children: [
             Align(

@@ -66,8 +66,9 @@ class CourseConfirm extends StatelessWidget {
           child: TextButton(
             onPressed: () {
               createCourse();
+              (courseId);
               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
               );
             },
             child: const Text(
@@ -83,7 +84,6 @@ class CourseConfirm extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: const Color(0xff1C1C1E),
       appBar: const BlurryTitle(title: "invite Students"),
       body: Padding(
         padding: const EdgeInsets.all(32),
@@ -114,7 +114,7 @@ class CourseConfirm extends StatelessWidget {
                       ),
                       Text(
                         courseId,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           color: Colors.white,
                           fontFamily: "SF Pro Text",
@@ -127,6 +127,10 @@ class CourseConfirm extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: courseId));
+                      const snackBar = SnackBar(
+                        content: Text('Course ID is copied to your clipboard'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     icon: const Icon(Icons.copy),
                     color: Colors.white,

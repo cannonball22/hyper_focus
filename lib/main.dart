@@ -14,19 +14,20 @@ import 'package:freerasp/talsec_config.dart';
 import '../screens/course_details.dart';
 import '../screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import './screens/create_an_account_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/home_screen.dart';
 import './screens/live_session.dart';
 import 'package:flutter/material.dart';
-
+import './services/notification_api.dart';
 import 'authentication_provider.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  NotificationApi.init();
 
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -38,15 +39,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<FirebaseApp> _intializeFirebase() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
-    return firebaseApp;
-  }
-
   @override
   void initState() {
     super.initState();
     initSecurityState();
+    tz.initializeTimeZones();
   }
 
   Future<void> initSecurityState() async {
@@ -109,6 +106,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //darkTheme: ,
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xff1C1C1E),
+      ),
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

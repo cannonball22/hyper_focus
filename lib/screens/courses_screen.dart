@@ -30,23 +30,15 @@ class _CoursesScreenState extends State<CoursesScreen> {
   QuerySnapshot? coursesData;
 
   Future runAllFutures() async {
-    await getUserData();
-    //await getCourseList();
-    await getCourseList2();
-  }
-
-/*
-  Future getCourseList() async {
-    return await FirebaseFirestore.instance
-        .collection("courses")
-        .get()
-        .then((results) {
+    await GetUserData.getUserData().then((result) {
       setState(() {
-        querySnapshot = results;
+        userName = result["userName"];
+        imageUrl = result["userImageUrl"];
+        enrolledCourses = result["enrolled courses"];
       });
     });
+    await getCourseList2();
   }
-*/
 
   Future getCourseList2() async {
     return await FirebaseFirestore.instance
@@ -54,24 +46,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
         .where("course UID", whereIn: enrolledCourses)
         .get()
         .then((result) {
-      //print(result);
       coursesData = result;
-    });
-  }
-
-  Future getUserData() async {
-    user = auth.currentUser;
-    uid = user?.uid;
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((result) {
-      setState(() {
-        userName = result["username"];
-        imageUrl = result["image_url"];
-        enrolledCourses = result["enrolled courses"];
-      });
     });
   }
 
@@ -178,7 +153,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xff1C1C1E),
       appBar: AppBar(
         backgroundColor: const Color(0xff1C1C1E),
         toolbarHeight: 158,
@@ -249,10 +223,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
       body: FutureBuilder(
         future: runAllFutures(),
         builder: (context, i) {
-          //print(coursesData);
-
           if (coursesData != null) {
-            //print(coursesData);
             return Stack(
               children: [
                 Padding(
@@ -265,97 +236,114 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 if (yes)
                   GestureDetector(
                     onTap: () {
-                      yes = false;
+                      print("pressed");
+                      Navigator.pop(context);
                     },
                     child: BackdropFilter(
-                      filter: ui.ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                      child: Container(
-                        color: const Color(0x146F6F6F).withOpacity(0.2),
-                      ),
-                    ),
-                  ),
-                if (yes)
-                  AlertDialog(
-                    backgroundColor: const Color(0x471E1E1E),
-                    content: const Text(
-                      "Please enter course ID",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 13,
-                        fontFamily: "SF Pro Text",
-                        letterSpacing: -0.08,
-                      ),
-                    ),
-                    title: const Text(
-                      "Join a course",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                        fontFamily: "SF Pro Text",
-                        letterSpacing: -0.41,
-                      ),
-                    ),
-                    actions: [
-                      Column(
-                        children: [
-                          Form(
-                            key: _formKey,
-                            child: TextFormField(
-                              key: const ValueKey('course id'),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter valid course ID';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                  filled: true, fillColor: Color(0xff1C1C1E)),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0x3cEBEBF5),
-                                fontWeight: FontWeight.normal,
-                                fontSize: 17,
-                                fontFamily: "SF Pro Text",
-                                letterSpacing: -0.41,
-                              ),
-                              onChanged: (value) {
-                                _joinCode = value;
-
-                                //print(_joinCode);
-                              },
+                        filter: ui.ImageFilter.blur(sigmaX: 22.0, sigmaY: 22.0),
+                        child: AlertDialog(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16.0))),
+                          backgroundColor: const Color(0xff1C1C1E),
+                          content: const Text(
+                            "Please enter course ID",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 13,
+                              fontFamily: "SF Pro Text",
+                              letterSpacing: -0.08,
                             ),
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: TextButton(
-                              onPressed: () async {
-                                bool connectionResult =
-                                    await _joinCourse(_joinCode);
-                                if (connectionResult == true) {
-                                  yes = false;
-                                }
-                              },
-                              child: const Text(
-                                "Join",
-                                style: TextStyle(
-                                  color: Color(0xff0A84FF),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 17,
-                                  fontFamily: "SF Pro Text",
-                                  letterSpacing: -0.41,
+                          title: const Text(
+                            "Join a course",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17,
+                              fontFamily: "SF Pro Text",
+                              letterSpacing: -0.41,
+                            ),
+                          ),
+                          actions: [
+                            Column(
+                              children: [
+                                Form(
+                                  key: _formKey,
+                                  child: TextFormField(
+                                    key: const ValueKey('course id'),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter valid course ID';
+                                      }
+                                      return null;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Color(0xff2C2C2E),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Color(0x3cEBEBF5),
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 17,
+                                      fontFamily: "SF Pro Text",
+                                      letterSpacing: -0.41,
+                                    ),
+                                    onChanged: (value) {
+                                      _joinCode = value;
+                                    },
+                                  ),
                                 ),
-                              ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: TextButton(
+                                    onPressed: () async {
+                                      bool connectionResult =
+                                          await _joinCourse(_joinCode);
+                                      if (connectionResult == true) {
+                                        yes = false;
+                                      }
+                                    },
+                                    child: const Text(
+                                      "Join",
+                                      style: TextStyle(
+                                        color: Color(0xff0A84FF),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17,
+                                        fontFamily: "SF Pro Text",
+                                        letterSpacing: -0.41,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
+                          ],
+                        )),
+                  ),
+                //if (yes)
               ],
+            );
+          } else if (enrolledCourses == null) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32.0),
+                child: Text(
+                  "You haven't enrolled in any course yet",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    letterSpacing: -0.41,
+                    fontFamily: "SF Pro Display",
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             );
           } else {
             return const Center(
@@ -400,7 +388,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                   courseName: coursesData?.docs[i].get("course name"),
                   instructorImage: coursesData?.docs[i].get('instructor image'),
                   instructorName: coursesData?.docs[i].get("instructor name"),
-                  courseUID: coursesData!.docs[i].id,
+                  courseID: coursesData!.docs[i].id,
                   courseDescription:
                       coursesData?.docs[i].get("course description"),
                   courseColor: coursesData?.docs[i].get("course color"),

@@ -39,23 +39,35 @@ dependencies:
   firebase_storage: ^10.2.18
   cloud_firestore: ^3.1.18
   uuid: ^3.0.6
+  timezone: ^0.8.0
   syncfusion_flutter_charts: ^20.1.61
   freerasp: ^2.0.0
   syncfusion_flutter_gauges: ^20.1.61
-
   #firebase_ml_vision : ^0.9.10
   #flutter_camera_ml_vision: ^2.2.4
-
-
+  #postgres: ^2.4.6
+  flutter_local_notifications: ^9.7.1
+  rxdart: ^0.27.5
+  flutter_native_timezone: ^2.0.0
+  expandable: ^5.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_native_splash: ^2.2.7
+
+flutter_native_splash:
+  background_image: assets/images/splash2.png
+  branding: assets/images/splash.png
+  branding_mode: center
 
 flutter:
 
   assets:
     - assets/icons/Logo.svg
+    - assets/logo.png
+    - assets/logo.svg
+
     - assets/icons/facebook.png
     - assets/icons/external-link.png
     - assets/icons/user.png
@@ -76,17 +88,11 @@ flutter:
     - assets/icons/video.png
     - assets/icons/eye-no.png
     - assets/icons/google.png
-    - assets/icons/microsoft.png
-    - assets/images/splash.png
-    - assets/images/splash_screen.png
-    - assets/images/calculus II.png
-    - assets/images/dr mahmoud sami.jpeg
-    - assets/images/dr hakam.png
     - assets/images/more people.png
     - assets/icons/chevrons-bottom.png
     - assets/images/dr ahmed donkel.png
-    - assets/images/mr Hadad.jpeg
     - assets/images/no-profile-image-24.jpg
+    - assets/images/placeholder.png
 
 
   uses-material-design: true

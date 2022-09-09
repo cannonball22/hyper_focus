@@ -19,109 +19,106 @@ class _AskForBreakState extends State<AskForBreak> {
         child: Container(
           width: 375,
           height: 278,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xff1E1E1E),
             borderRadius: BorderRadius.all(
               Radius.circular(14),
             ),
           ),
-          padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 8, bottom: 8),
+          padding:
+              const EdgeInsets.only(left: 16.0, right: 16.0, top: 8, bottom: 8),
           child: Column(
             children: [
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Ask for A break",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: "SF Pro Text",
-                          fontSize: 17,
-                        ),
-                      ),
-                      Text(
-                        "Please enter your reason and Expected duration",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SF Pro Text",
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Container(
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  children: [
-                    TextField(
-                      decoration: InputDecoration(
-                          hintStyle: TextStyle(color: Colors.white),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 0.0,
-                            ),
-                          ),
-                          hintText: 'State a reason'),
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: CupertinoSlidingSegmentedControl<int>(
-                        groupValue: groupValue,
-                        backgroundColor: Color(0x3D767680),
-                        thumbColor: Color(0xff636366),
-                        children: {
-                          5: Text(
-                            "5 mins",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "SF Pro Text",
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          10: Text(
-                            "10 mins",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "SF Pro Text",
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          15: Text(
-                            "15 mins",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "SF Pro Text",
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        },
-                        onValueChanged: (groupValue) {
-                          setState(() {
-                            this.groupValue = groupValue;
-                          });
-                        },
+                  children: const [
+                    Text(
+                      "Ask for A break",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "SF Pro Text",
+                        fontSize: 17,
                       ),
                     ),
-                    SizedBox(
-                      height: 16,
-                    )
+                    Text(
+                      "Please enter your reason and Expected duration",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "SF Pro Text",
+                        fontSize: 13,
+                      ),
+                    ),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                        hintStyle: TextStyle(color: Colors.white),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.white,
+                            width: 0.0,
+                          ),
+                        ),
+                        hintText: 'State a reason'),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: CupertinoSlidingSegmentedControl<int>(
+                      groupValue: groupValue,
+                      backgroundColor: Color(0x3D767680),
+                      thumbColor: Color(0xff636366),
+                      children: {
+                        5: Text(
+                          "5 mins",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "SF Pro Text",
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        10: Text(
+                          "10 mins",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "SF Pro Text",
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        15: Text(
+                          "15 mins",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "SF Pro Text",
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      },
+                      onValueChanged: (groupValue) {
+                        setState(() {
+                          this.groupValue = groupValue;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  )
+                ],
               ),
               SizedBox(
                 height: 8,
