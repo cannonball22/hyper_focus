@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 // Title/Header 1
 const kHeader1TextStyle = TextStyle(
   fontSize: 64.0,
