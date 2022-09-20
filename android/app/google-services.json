@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:56765698084:android:ab6616f0abefd08fd5c8b1",
+        "mobilesdk_app_id": "1:56765698084:android:d0b030393d4f2908d5c8b1",
         "android_client_info": {
-          "package_name": "com.example.hyper_focus"
+          "package_name": "com.hyper.focus"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "56765698084-h5lincflenlamqomsaj1ona96js3dj20.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hyper.focus",
+            "certificate_hash": "997959af795299ad31cfe8f74bcf6d521612163c"
+          }
+        },
         {
           "client_id": "56765698084-lq5i197sqsu1mtklk080405339g168v6.apps.googleusercontent.com",
           "client_type": 3

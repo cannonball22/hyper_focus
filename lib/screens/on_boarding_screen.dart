@@ -48,8 +48,8 @@ class OnBoardingScreen extends StatelessWidget {
                       //implement biometric auth here
 
                       GetUserData.getUserData().then((results) {
-                        userEmail = results["email"];
-                        userName = results["username"];
+                        userEmail = results["userEmail"];
+                        userName = results["userName"];
                       });
                       FirebaseFirestore.instance
                           .collection('courses')
@@ -60,10 +60,10 @@ class OnBoardingScreen extends StatelessWidget {
                           .doc(GetUserData.getUserId())
                           .set({
                         "attendance": true,
-                        "quiz grade": 0,
-                        "hyper focus": 0,
+                        //"quiz grade": 0,
+                        //"attendanceAverage": [],
+                        //"hyperFocusAverage": [],
                         "student UID": GetUserData.getUserId(),
-                        "student email": userEmail,
                         "student name": userName,
                       });
                       Navigator.push(

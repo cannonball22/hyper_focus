@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:hyper_focus/screens/courses_screen.dart';
+import '../constants';
+import '../main.dart';
 import '../screens/home_screen.dart';
 import '../widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,13 @@ class _AuthFormState extends State<AuthForm> {
       required BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -50,6 +59,7 @@ class _AuthFormState extends State<AuthForm> {
         print("No User found for that email");
       }
     }
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
     return user;
   }
 
@@ -84,15 +94,16 @@ class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff1C1C1E),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xff1C1C1E),
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0,
         toolbarHeight: 180,
         flexibleSpace: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SvgPicture.asset('assets/icons/Logo.svg'),
+            SvgPicture.asset('assets/icons/logo.svg',
+                color: Theme.of(context).colorScheme.onBackground),
           ],
         ),
       ),
@@ -102,9 +113,9 @@ class _AuthFormState extends State<AuthForm> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xff3A3A3C),
-                  borderRadius: BorderRadius.all(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(16),
                   ),
                 ),
@@ -130,21 +141,21 @@ class _AuthFormState extends State<AuthForm> {
                             return null;
                           },
                           keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: "Email",
                             filled: true,
-                            fillColor: Color(0xff2C2C2E),
+                            fillColor: Theme.of(context).cardColor,
                             border: InputBorder.none,
                             hintStyle: TextStyle(
-                              color: Color(0x3CEBEBF5),
+                              color: Theme.of(context).colorScheme.tertiary,
                               letterSpacing: -0.41,
                               fontWeight: FontWeight.w400,
                               fontSize: 17,
                               fontFamily: "SF Pro Text",
                             ),
                           ),
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           maxLines: 1,
                           onChanged: (value) {
@@ -165,21 +176,23 @@ class _AuthFormState extends State<AuthForm> {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   hintText: "Display Name",
                                   filled: true,
-                                  fillColor: Color(0xff2C2C2E),
+                                  fillColor: Theme.of(context).cardColor,
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(
-                                    color: Color(0x3CEBEBF5),
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
                                     letterSpacing: -0.41,
                                     fontWeight: FontWeight.w400,
                                     fontSize: 17,
                                     fontFamily: "SF Pro Text",
                                   ),
                                 ),
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                                 onChanged: (value) {
                                   _userName = value;
@@ -199,21 +212,21 @@ class _AuthFormState extends State<AuthForm> {
                             }
                             return null;
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: "Password",
                             filled: true,
-                            fillColor: Color(0xff2C2C2E),
+                            fillColor: Theme.of(context).cardColor,
                             border: InputBorder.none,
                             hintStyle: TextStyle(
-                              color: Color(0x3CEBEBF5),
+                              color: Theme.of(context).colorScheme.tertiary,
                               letterSpacing: -0.41,
                               fontWeight: FontWeight.w400,
                               fontSize: 17,
                               fontFamily: "SF Pro Text",
                             ),
                           ),
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           onChanged: (value) {
                             _userPassword = value;
@@ -227,9 +240,9 @@ class _AuthFormState extends State<AuthForm> {
                           Container(
                             height: 59,
                             width: double.infinity,
-                            decoration: const BoxDecoration(
-                              color: Color(0xff0A84FF),
-                              borderRadius: BorderRadius.all(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(13),
                               ),
                             ),
@@ -239,7 +252,8 @@ class _AuthFormState extends State<AuthForm> {
                                   _trySubmit();
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (context) => const HomeScreen(),
+                                      builder: (context) =>
+                                          const CoursesScreen(),
                                     ),
                                   );
                                 } else {
@@ -252,7 +266,7 @@ class _AuthFormState extends State<AuthForm> {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const HomeScreen(),
+                                            const CoursesScreen(),
                                       ),
                                     );
                                   }
@@ -260,8 +274,9 @@ class _AuthFormState extends State<AuthForm> {
                               },
                               child: Text(
                                 _isLogin ? 'Login' : 'Create Account',
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: "SF Pro Text",
@@ -272,10 +287,10 @@ class _AuthFormState extends State<AuthForm> {
                           ),
                         TextButton(
                           onPressed: () {},
-                          child: const Text(
+                          child: Text(
                             "Forgot Password",
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onSurface,
                                 letterSpacing: -0.41,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
@@ -288,15 +303,25 @@ class _AuthFormState extends State<AuthForm> {
                 ),
               ),
               if (!widget.isLoading)
-                TextButton(
-                  child: Text(_isLogin
-                      ? 'Create new account'
-                      : 'I already have an account'),
-                  onPressed: () {
-                    setState(() {
-                      _isLogin = !_isLogin;
-                    });
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                        _isLogin
+                            ? "Don’t have an account?"
+                            : "Already have an account?",
+                        style: kSmallestTextStyle),
+                    TextButton(
+                      child: Text(_isLogin
+                          ? 'Create new account'
+                          : 'I already have an account'),
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
+                    )
+                  ],
                 )
             ],
           ),

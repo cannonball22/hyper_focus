@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_focus/screens/courses_screen.dart';
 import '../screens/sign_up.dart';
 import '../widgets/text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,11 +36,19 @@ class _LoginScreenState extends State<LoginScreen> {
     return user;
   }
 
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _passwordController = TextEditingController();
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -146,17 +155,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextButton(
                           onPressed: () async {
                             User? user = await loginUsingEmailPassword(
-                                email: _emailController.text,
-                                password: _passwordController.text,
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
                                 context: context);
                             print(user);
                             if (user != null) {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (context) => HomeScreen()));
+                                      builder: (context) => CoursesScreen()));
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             "Log In",
                             style: TextStyle(
                               color: Colors.white,

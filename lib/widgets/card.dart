@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../constants';
 import '../screens/course_details.dart';
 
 class CourseCard extends StatelessWidget {
@@ -25,6 +27,10 @@ class CourseCard extends StatelessWidget {
   final String instructorUID;
   @override
   Widget build(BuildContext context) {
+    // keeps printing? does it keeps rebuilding?
+
+    // print(participants);
+
     return GestureDetector(
       onTap: () {
         //print(courseUID);
@@ -46,7 +52,7 @@ class CourseCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xff2C2C2E),
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Padding(
@@ -63,14 +69,14 @@ class CourseCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            courseName,
-                            style: const TextStyle(
-                              fontSize: 32,
-                              fontFamily: "AvantGarde Bk BT",
-                              color: Colors.white,
-                            ),
-                          ),
+                          Text(courseName,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontSize: 32.0,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "AvantGarde Bk BT",
+                                letterSpacing: -0.02,
+                              )),
                           const SizedBox(
                             height: 8,
                           ),
@@ -88,18 +94,21 @@ class CourseCard extends StatelessWidget {
                                 children: [
                                   CircleAvatar(
                                     radius: 12,
-                                    backgroundImage:
-                                        NetworkImage(instructorImage),
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        instructorImage),
+                                    backgroundColor: Colors.transparent,
                                   ),
                                   const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
                                     instructorName,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: "SF UI Display",
-                                      fontWeight: FontWeight.bold,
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "SF Pro Text",
+                                      letterSpacing: 0.48,
                                     ),
                                   ),
                                 ],
@@ -111,54 +120,17 @@ class CourseCard extends StatelessWidget {
                           ),
                           Text(
                             courseDate,
-                            style: const TextStyle(
-                              fontFamily: "SF UI Display",
-                              fontSize: 14,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 14.0,
                               fontWeight: FontWeight.w400,
-                              color: Colors.white,
+                              fontFamily: "SF Pro Text",
+                              letterSpacing: -0.24,
                             ),
                           )
                         ],
                       ),
                     ),
-                    PopupMenuButton<int>(
-                      color: Color(0xff3A3A3C),
-                      onSelected: (item) => onSelected(context, item),
-                      itemBuilder: (context) => [
-                        PopupMenuItem<int>(
-                          value: 0,
-                          child: Row(
-                            children: [
-                              Icon(Icons.copy, color: Colors.white),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                "Copy to clipboard",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                        PopupMenuItem<int>(
-                          value: 1,
-                          child: Row(
-                            children: [
-                              Icon(Icons.settings, color: Colors.white),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                "Modify",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                      icon: const Icon(Icons.more_vert,
-                          size: 24, color: Color(0xff1F89FD)),
-                    )
                   ],
                 ),
               )

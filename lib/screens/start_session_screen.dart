@@ -222,7 +222,7 @@ class _StartSessionScreenState extends State<StartSessionScreen> {
         .doc(sessionID)
         .set({
       "live": true,
-      "session date": dateTime,
+      "sessionStartTime": dateTime,
       "session description": _description,
       "session title": _title,
     });

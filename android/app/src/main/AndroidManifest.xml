@@ -1,10 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hyper_focus">
+    package="com.hyper.focus">
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE " />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
+    <queries>
+        <package android:name="com.microsoft.teams" />
+    </queries>
     <application
         android:label="Hyper Focus"
         android:name="${applicationName}"
@@ -30,6 +32,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.HOME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

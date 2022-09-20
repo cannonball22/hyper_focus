@@ -9,7 +9,7 @@ import '../screens/live_session.dart';
 import '../services/auth.dart';
 import '../services/get_user_data.dart';
 import '../services/notification_api.dart';
-
+import 'package:external_app_launcher/external_app_launcher.dart';
 //late BuildContext context1;
 //late String courseName1;
 //late String courseUID1;
@@ -89,14 +89,14 @@ class _NormalModeState extends State<NormalMode> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(48),
-              color: const Color(0xff48484A),
+              color: Theme.of(context).primaryColor,
             ),
             child: IconButton(
               tooltip: "Ask for a break",
               onPressed: () {},
-              icon: const ImageIcon(
+              icon: ImageIcon(
                 AssetImage("assets/icons/time.png"),
-                color: Color(0xff1F89FD),
+                color: Theme.of(context).colorScheme.onPrimary,
                 size: 32,
               ),
             ),
@@ -107,10 +107,20 @@ class _NormalModeState extends State<NormalMode> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(48),
-              color: const Color(0xff48484A),
+              color: Theme.of(context).primaryColor,
             ),
             child: IconButton(
               onPressed: () async {
+                NotificationApi.showScheduledNotification(
+                  title: widget.courseName,
+                  body: "take your attendance",
+                  payload: "lol",
+                );
+                await LaunchApp.openApp(
+                  androidPackageName: "com.microsoft.teams",
+                  openStore: true,
+                );
+/*
                 SystemAlertWindow.requestPermissions;
 
                 SystemWindowHeader header = SystemWindowHeader(
@@ -201,12 +211,12 @@ class _NormalModeState extends State<NormalMode> {
                   prefMode: SystemWindowPrefMode.BUBBLE,
                   width: SystemWindowButton.MATCH_PARENT,
                   height: SystemWindowButton.MATCH_PARENT,
-                );
+                );*/
               },
               tooltip: "Overlay mode",
-              icon: const ImageIcon(
+              icon: ImageIcon(
                 AssetImage("assets/icons/external-link.png"),
-                color: Color(0xff1F89FD),
+                color: Theme.of(context).colorScheme.onPrimary,
                 size: 32,
               ),
             ),

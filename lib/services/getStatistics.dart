@@ -21,6 +21,37 @@ class GetCourseStatistics {
         .then((result) => result);
   }
 
+  static getCurrentInterval(
+      {required String? courseID, required String? sessionID}) async {
+    int? interval;
+    DateTime? now;
+    int? remaining;
+    DateTime? startTimeDate;
+    Timestamp? startTime;
+    return await FirebaseFirestore.instance
+        .collection("courses")
+        .doc(courseID)
+        .collection("sessions")
+        .doc(sessionID)
+        .get()
+        .then((result) {
+      startTime = result.get("sessionStartTime");
+      startTimeDate = startTime?.toDate();
+      //print(startTimeDate);
+      now = DateTime.now();
+      remaining = now?.difference(startTimeDate!).inMinutes;
+      //print(remaining);
+      for (int i = 0; i < 24; i++) {
+        if (i * 5 <= remaining!) {
+          interval = i;
+        } else {
+          return interval;
+        }
+      }
+      return 0;
+    });
+  }
+
   static getNumberOfSessionParticipants(
       {required String? courseID, required String? sessionID}) async {
     return await FirebaseFirestore.instance

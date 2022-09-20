@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../constants';
 import '../services/buildgraph.dart';
 import '../services/getStatistics.dart';
 import 'package:expandable/expandable.dart';
@@ -21,6 +22,8 @@ class _ParticipantsScreenState extends State<ParticipantsScreen> {
   Stream getParticipantsData() async* {
     participantsData = await GetCourseStatistics.getParticipantsData(
         courseID: widget.courseID, sessionID: widget.sessionID);
+    print(participantsData?.size);
+    yield participantsData;
   }
 
   @override
@@ -28,7 +31,17 @@ class _ParticipantsScreenState extends State<ParticipantsScreen> {
     return StreamBuilder(
       stream: getParticipantsData(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.data == null) {
+          return const Center(
+            child: Text(
+              "There is no participants yet!",
+              style: kSubtitleTextStyle,
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
+        //print(snapshot);
+        else if (snapshot.connectionState == ConnectionState.done) {
           return SingleChildScrollView(
             child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
@@ -36,6 +49,29 @@ class _ParticipantsScreenState extends State<ParticipantsScreen> {
               shrinkWrap: true,
               itemCount: participantsData?.docs.length,
               itemBuilder: (context, i) {
+                double hyperFocusAvg = 0;
+                double attendanceAvg = 0;
+                for (int j = 0; j < 24; j++) {
+                  try {
+                    attendanceAvg = attendanceAvg +
+                        participantsData?.docs[i]
+                            .get("attendanceAverage")["$j"];
+                  } catch (e) {
+                    continue;
+                  }
+                }
+                for (int j = 0; j < 24; j++) {
+                  try {
+                    hyperFocusAvg = hyperFocusAvg +
+                        participantsData?.docs[i]
+                            .get("hyperFocusAverage")["$j"];
+                  } catch (e) {
+                    continue;
+                  }
+                }
+                attendanceAvg = (attendanceAvg / (23)) * 100;
+                hyperFocusAvg = (hyperFocusAvg / (23)) * 100;
+
                 return Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   child: Card(
@@ -109,15 +145,9 @@ class _ParticipantsScreenState extends State<ParticipantsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               buildStat(
-                                "Attendance",
-                                participantsData?.docs[i]
-                                    .get("attendanceAverage"),
-                              ),
-                              buildStat(
-                                "Hyper focus",
-                                participantsData?.docs[i]
-                                    .get("hyperFocusAverage"),
-                              ),
+                                  "Attendance", attendanceAvg.toInt(), context),
+                              buildStat("Hyper focus", hyperFocusAvg.toInt(),
+                                  context),
                             ],
                           ),
                           const SizedBox(

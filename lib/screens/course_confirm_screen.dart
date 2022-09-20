@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hyper_focus/screens/courses_screen.dart';
 import 'package:hyper_focus/screens/home_screen.dart';
 import 'package:hyper_focus/widgets/blurry_title.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +69,7 @@ class CourseConfirm extends StatelessWidget {
               createCourse();
               (courseId);
               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
+                MaterialPageRoute(builder: (context) => const CoursesScreen()),
               );
             },
             child: const Text(

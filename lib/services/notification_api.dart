@@ -22,7 +22,7 @@ class NotificationApi {
 
   static Future init({bool initScheduled = false}) async {
     final android = AndroidInitializationSettings("@mipmap/ic_launcher");
-    final ios = IOSInitializationSettings();
+    final ios = const IOSInitializationSettings();
     final settings = InitializationSettings(android: android, iOS: ios);
 
     final details = await _notification.getNotificationAppLaunchDetails();

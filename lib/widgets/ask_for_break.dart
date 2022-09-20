@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../constants';
 
 class AskForBreak extends StatefulWidget {
   const AskForBreak({Key? key}) : super(key: key);
@@ -35,21 +36,11 @@ class _AskForBreakState extends State<AskForBreak> {
                   children: const [
                     Text(
                       "Ask for A break",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "SF Pro Text",
-                        fontSize: 17,
-                      ),
+                      style: kBodyBoldTextStyle,
                     ),
                     Text(
                       "Please enter your reason and Expected duration",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "SF Pro Text",
-                        fontSize: 13,
-                      ),
+                      style: kSmallestTextStyle,
                     ),
                   ],
                 ),
@@ -82,30 +73,15 @@ class _AskForBreakState extends State<AskForBreak> {
                       children: {
                         5: Text(
                           "5 mins",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "SF Pro Text",
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: kSmallestTextStyle,
                         ),
                         10: Text(
                           "10 mins",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "SF Pro Text",
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: kSmallestTextStyle,
                         ),
                         15: Text(
                           "15 mins",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "SF Pro Text",
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: kSmallestTextStyle,
                         ),
                       },
                       onValueChanged: (groupValue) {
@@ -137,11 +113,7 @@ class _AskForBreakState extends State<AskForBreak> {
                   onPressed: () {},
                   child: Text(
                     "Ask",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff007AFF),
-                        fontSize: 17,
-                        fontFamily: "SF Pro Text"),
+                    style: kButtonTextStyle,
                   ),
                 ),
               ),

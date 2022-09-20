@@ -30,8 +30,8 @@ class _AuthScreenState extends State<AuthScreen> {
       });
       if (isLogin) {
         userCredential = await _auth.signInWithEmailAndPassword(
-          email: email,
-          password: password,
+          email: email.trim(),
+          password: password.trim(),
         );
       } else {
         userCredential = await _auth.createUserWithEmailAndPassword(
@@ -82,6 +82,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: AuthForm(_submitAuthForm, _isLoading),
     );
   }

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../services/auth.dart';
+import '../services/getStatistics.dart';
 import '../services/get_user_data.dart';
 import '../services/notification_api.dart';
 import '../widgets/blurry_title.dart';
@@ -30,7 +31,6 @@ class _LiveSessionState extends State<LiveSession> {
   String question = "";
   bool? status = true;
   dynamic answers;
-  Timestamp? startTime;
   DateTime? startDateTime;
   String? startDateString;
   Timestamp? endTime;
@@ -38,6 +38,15 @@ class _LiveSessionState extends State<LiveSession> {
   String? endDateString;
   String? quizID;
   int? rightAnswer;
+  int? interval;
+  QuerySnapshot? quizData;
+  Stream getCurrentInterval() async* {
+    interval = await GetCourseStatistics.getCurrentInterval(
+        sessionID: widget.sessionID, courseID: widget.courseID);
+    //print(interval);
+    yield interval;
+  }
+
   Stream getQuizData() async* {
     yield await FirebaseFirestore.instance
         .collection('courses')
@@ -45,14 +54,19 @@ class _LiveSessionState extends State<LiveSession> {
         .collection("sessions")
         .doc(widget.sessionID)
         .collection("quiz")
+        .where("status", isEqualTo: true)
         .get()
         .then((result) {
-      quizID = result.docs.last.id;
+      if (result.docs.length > 0) {
+        quizData = result;
+        return quizData;
+      }
+      return null;
+    });
+  }
+  //print(result.docs[0].data());
 
-      question = result.docs.last["question"];
-      status = result.docs.last["status"];
-      answers = result.docs.last["answers"];
-      rightAnswer = result.docs.last["rightAnswer"];
+  /*
       startTime = result.docs.last["startTime"] as Timestamp;
       endTime = result.docs.last["endTime"] as Timestamp;
       startDateTime = startTime?.toDate();
@@ -60,10 +74,7 @@ class _LiveSessionState extends State<LiveSession> {
       endDateTime = endTime?.toDate();
       endDateString = DateFormat('K:mm:ss').format(endDateTime!);
       DateTime now = DateTime.now();
-      Duration myDuration = const Duration(days: 5);
-    });
-  }
-
+      Duration myDuration = const Duration(days: 5);*/
   @override
   void initState() {
     super.initState();
@@ -76,6 +87,22 @@ class _LiveSessionState extends State<LiveSession> {
 
   Future<void> onClickedNotification(String? payload) async {
     bool isAuthenticated = await AuthService.authenticateUser();
+    //List<dynamic> attendanceAverage = [];
+    //List<dynamic> hyperFocusAverage = [];
+    print(isAuthenticated);
+    /*
+    await FirebaseFirestore.instance
+        .collection('courses')
+        .doc(widget.courseID)
+        .collection('sessions')
+        .doc(widget.sessionID)
+        .collection("participants")
+        .doc(GetUserData.getUserId())
+        .get()
+        .then((result) {
+      //attendanceAverage = result.get("attendanceAverage");
+      //hyperFocusAverage = result.get("hyperFocusAverage");
+    });*/
     if (isAuthenticated) {
       await FirebaseFirestore.instance
           .collection('courses')
@@ -84,10 +111,34 @@ class _LiveSessionState extends State<LiveSession> {
           .doc(widget.sessionID)
           .collection("participants")
           .doc(GetUserData.getUserId())
-          .update(
-        {"hyper focus": FieldValue.increment(1)},
-      );
+          .update({
+        "attendanceAverage": {"$interval": 1},
+        "hyperFocusAverage": {"$interval": 1}
+      });
     }
+    /*
+    if (isAuthenticated) {
+      print(hyperFocusAverage);
+      attendanceAverage.add(1);
+      hyperFocusAverage.add(1);
+      print(hyperFocusAverage);
+    } else {
+      attendanceAverage.add(0);
+      hyperFocusAverage.add(0);
+    }
+    await FirebaseFirestore.instance
+        .collection('courses')
+        .doc(widget.courseID)
+        .collection('sessions')
+        .doc(widget.sessionID)
+        .collection("participants")
+        .doc(GetUserData.getUserId())
+        .update(
+      {
+        "attendanceAverage": attendanceAverage,
+        "hyperFocusAverage": hyperFocusAverage,
+      },
+    );*/
   }
 
   @override
@@ -103,48 +154,38 @@ class _LiveSessionState extends State<LiveSession> {
         title: widget.courseName,
       ),
       body: StreamBuilder(
-        stream: getQuizData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              status == false) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () => NotificationApi.showScheduledNotification(
-                    title: widget.courseName,
-                    body: "take your attendance",
-                    payload: "lol",
-                  ),
-                  child: const Text(
-                    "CLICK ME",
-                  ),
-                ),
-                ChoiceQuiz(
-                  question: question,
-                  status: status,
-                  answers: answers,
+        stream: getCurrentInterval(),
+        builder: (context, snapshot) => StreamBuilder(
+          stream: getQuizData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.data != null) {
+              return Center(
+                child: ChoiceQuiz(
+                  quizId: quizData?.docs[0].id,
+                  question: quizData?.docs[0].get("question"),
+                  status: quizData?.docs[0].get("status"),
+                  answers: quizData?.docs[0].get("answers"),
+                  rightAnswer: quizData?.docs[0].get("rightAnswer"),
                   sessionId: widget.sessionID,
                   courseId: widget.courseID,
-                  quizId: quizID,
-                  rightAnswer: rightAnswer,
                 ),
-              ],
-            );
-          } else {
-            return const Center(
-              child: Text(
-                "There is no available Quiz now!",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontFamily: "SF Pro Display",
-                    fontSize: 24,
-                    letterSpacing: -0.41),
-              ),
-            );
-          }
-        },
+              );
+            } else {
+              return Center(
+                child: Text(
+                  "There is no available Quiz now!",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontFamily: "SF Pro Display",
+                      fontSize: 24,
+                      letterSpacing: -0.41),
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

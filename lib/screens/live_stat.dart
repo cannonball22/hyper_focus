@@ -4,21 +4,15 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_focus/screens/participantsScreen.dart';
-import 'package:hyper_focus/widgets/blurry_title.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-
-import 'create_quiz_screen.dart';
 import 'overviewScreen.dart';
 
 class LiveStat extends StatefulWidget {
-  const LiveStat(
-      {Key? key,
-      required this.courseName,
-      required this.courseID,
-      required this.sessionID})
-      : super(key: key);
+  const LiveStat({
+    Key? key,
+    required this.courseName,
+    required this.courseID,
+    required this.sessionID,
+  }) : super(key: key);
   final String courseName;
   final String courseID;
   final String? sessionID;
@@ -48,20 +42,24 @@ class _LiveStatState extends State<LiveStat> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          bottom: const TabBar(
+          bottom: TabBar(
+            labelColor: Theme.of(context).colorScheme.onBackground,
+            indicatorColor: Theme.of(context).colorScheme.onBackground,
             tabs: [
-              Tab(text: "Overview"),
+              Tab(
+                text: "Overview",
+              ),
               Tab(text: "Participants"),
             ],
           ),
-          backgroundColor: const Color(0xff1C1C1E),
-          title: const Text(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          title: Text(
             "Live Statistics",
             style: TextStyle(
               fontFamily: "SF UI Display",
               fontWeight: FontWeight.w600,
               fontSize: 24,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
           centerTitle: true,
@@ -69,10 +67,10 @@ class _LiveStatState extends State<LiveStat> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back,
               size: 32,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ),

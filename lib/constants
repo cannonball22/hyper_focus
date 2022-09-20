@@ -1,133 +1,97 @@
 import 'package:flutter/material.dart';
 
-const kSubtitleTextStyle =
-    TextStyle(fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.bold);
-const kBodyTextStyle = TextStyle(
-    fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.normal);
-//const kBackgroundColor = Color(0xFFE3EFFC);
-const kBackgroundColor = Colors.white;
 
-const kPrimaryColor = Color(0XFF0F5298);
-const kSecondaryColor = Color(0xFF3C99DC);
-const kFailColor = Color(0xFFFF4243);
-const kSuccessColor = Color(0xFF4ADEDE);
 
-const kPageTitleTextStyle = TextStyle(
-  fontSize: 34.0,
-  color: Colors.black,
+// Title/Header 1
+const kHeader1TextStyle = TextStyle(
+  fontSize: 64.0,
   fontWeight: FontWeight.w700,
-  fontFamily: "SF Pro Display",
-  letterSpacing: -0.41,
+  fontFamily: "AvantGarde Bk BT",
+  letterSpacing: -0.2,
 );
-const kPageTitleScrolledTextStyle = TextStyle(
-  fontSize: 17.0,
-  color: Colors.black,
-  fontWeight: FontWeight.w600,
+
+// Header 2
+const kHeader2TextStyle = TextStyle(
+  fontSize: 40.0,
+  fontWeight: FontWeight.w700,
+  fontFamily: "AvantGarde Bk BT",
+  letterSpacing: -0.02,
+);
+
+// Header 3
+const kHeader3TextStyle = TextStyle(
+  color: Color(0XFFFFFFFF),
+  fontSize: 32.0,
+  fontWeight: FontWeight.w700,
+  fontFamily: "AvantGarde Bk BT",
+  letterSpacing: -0.02,
+);
+
+// Subtitle/Body Large
+const kSubtitleTextStyle = TextStyle(
+  fontSize: 24.0,
+  //color: Theme.of(context).colorScheme.onBackground,
+  fontWeight: FontWeight.w500,
   fontFamily: "SF Pro Text",
   letterSpacing: -0.41,
+  height: 1.4,
 );
-const kModalTitleTextStyle = TextStyle(
-  fontSize: 17.0,
-  color: Colors.black,
+
+// Body
+const kBodyTextStyle = TextStyle(
+  fontSize: 16.0,
   fontWeight: FontWeight.w500,
   fontFamily: "SF Pro Text",
   letterSpacing: -0.41,
 );
-//Paragraph text, Item title, Search bar, Text Input
-const kBodyTextTextStyle = TextStyle(
-  fontSize: 17.0,
-  color: Colors.white,
-  fontWeight: FontWeight.w600,
+
+const kBodyBoldTextStyle = TextStyle(
+  color: Color(0XFFFFFFFF),
+  fontSize: 16.0,
+  fontWeight: FontWeight.w700,
   fontFamily: "SF Pro Text",
   letterSpacing: -0.41,
 );
 
-const kButtonTextStyle = TextStyle(
-    fontSize: 17.0,
-    color: Colors.white,
-    fontWeight: FontWeight.w600,
-    fontFamily: "SF Pro Text",
-    letterSpacing: -0.24);
-
-//Secondary text, Timestamp, Item Body,item Desc
-const kSecondaryTextTextStyle = TextStyle(
-    fontSize: 15.0,
-    color: Colors.white,
-    fontWeight: FontWeight.w400,
-    fontFamily: "SF Pro Text",
-    letterSpacing: -0.24);
-
-const kActiveItemTextStyle = TextStyle(
-    fontSize: 17.0,
-    //color: Color(0xff007AFF),
-    fontWeight: FontWeight.w600,
-    fontFamily: "SF Pro Text",
-    letterSpacing: -0.24);
-
-//Inactive Item text, Header Text
-const kInactiveItemTextStyle = TextStyle(
-    fontSize: 17.0,
-    //color: Color(0xff007AFF),
-    fontWeight: FontWeight.w500,
-    fontFamily: "SF Pro Text",
-    letterSpacing: -0.24);
-
-//Tertiary text,Captions,Segmented buttons
-const kTertiaryTextStyle = TextStyle(
-    fontSize: 13.0,
-    //color: Color(0xff007AFF),
-    fontWeight: FontWeight.w400,
-    fontFamily: "SF Pro Text",
-    letterSpacing: -0.08);
-
+// Small
 const kSmallestTextStyle = TextStyle(
-    fontSize: 10.0,
-    //color: Color(0xff007AFF),
-    fontWeight: FontWeight.w700,
-    fontFamily: "SF Pro Text",
-    letterSpacing: 0.12);
+  fontSize: 14.0,
+  color: Color(0XFF000000),
+  fontWeight: FontWeight.w400,
+  fontFamily: "SF Pro Text",
+  letterSpacing: 0,
+);
 
-const kRegularLinkTextStyle = TextStyle(
-    fontSize: 17.0,
-    color: Color(0xff007AFF),
-    fontWeight: FontWeight.w400,
-    fontFamily: "SF Pro Text",
-    letterSpacing: -0.41);
+// Footnote
+const kFootnoteTextStyle = TextStyle(
+  fontSize: 12.0,
+  fontWeight: FontWeight.w600,
+  fontFamily: "SF Pro Text",
+  letterSpacing: -0.8,
+);
 
-const kSemiBoldLinkTextStyle = TextStyle(
-    fontSize: 13.0,
-    color: Color(0xff007AFF),
-    fontWeight: FontWeight.w600,
-    fontFamily: "SF Pro Text",
-    letterSpacing: -0.41);
+// Pre Title
+const kPreTitleStyle = TextStyle(
+  color: Color(0xff000000),
+  fontSize: 12.0,
+  fontWeight: FontWeight.w700,
+  fontFamily: "SF Pro Text",
+  letterSpacing: 0.03,
+);
 
-/*
-const kBottonContainerHeight = 80.0;
-const kActiveCardColour = Color(0xFF1D1E33);
-const kInactiveCardColour = Color(0xFF111328);
-const kBottomContainerColour = Color(0xFFEB1555);
-const kNumberTextStyle = TextStyle(
-  fontSize: 50.0,
-  fontWeight: FontWeight.w900,
+// Button Text
+const kButtonTextStyle = TextStyle(
+  fontSize: 20.0,
+  fontWeight: FontWeight.w600,
+  fontFamily: "SF UI Display",
+  letterSpacing: 0.4,
 );
-const kLargeButtonTextStyle = TextStyle(
-  fontSize: 25.0,
-  fontWeight: FontWeight.bold,
+
+// Link
+const kLinkTextStyle = TextStyle(
+  fontSize: 16.0,
+  color: Color(0xff007AFF),
+  fontWeight: FontWeight.w700,
+  fontFamily: "SF Pro Text",
+  letterSpacing: -0.41,
 );
-const kTitleTextStyle = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: 50.0,
-);
-const kResultTextStyle = TextStyle(
-  fontSize: 22.0,
-  fontWeight: FontWeight.bold,
-  color: Color(0xFF24D876),
-);
-const kBMIScoreTextStyle = TextStyle(
-  fontSize: 100.0,
-  fontWeight: FontWeight.bold,
-);
-const kAdviceMessage = TextStyle(
-  fontSize: 22.0,
-);
-*/

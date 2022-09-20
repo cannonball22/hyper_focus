@@ -26,11 +26,7 @@ class InstructionWidget extends StatelessWidget {
         Expanded(
           child: Text(
             textPassed,
-            style: const TextStyle(
-                color: Colors.white,
-                fontFamily: "SF Pro Text",
-                fontWeight: FontWeight.w400,
-                fontSize: 17),
+            style: kBodyTextStyle,
           ),
         )
       ],

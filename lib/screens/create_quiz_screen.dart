@@ -40,14 +40,15 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Set Question",
                       style: TextStyle(
-                          fontFamily: "SF Pro Display",
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.35,
-                          color: Colors.white),
+                        fontFamily: "SF Pro Display",
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.35,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                     ),
                     const SizedBox(
                       height: 16,
@@ -61,21 +62,21 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                         return null;
                       },
                       keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "set question",
                         filled: true,
-                        fillColor: Color(0xff2C2C2E),
+                        fillColor: Theme.of(context).colorScheme.surface,
                         border: InputBorder.none,
                         hintStyle: TextStyle(
-                          color: Color(0x3CEBEBF5),
+                          color: Theme.of(context).colorScheme.onSurface,
                           letterSpacing: -0.41,
                           fontWeight: FontWeight.w400,
                           fontSize: 17,
                           fontFamily: "SF Pro Text",
                         ),
                       ),
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       maxLines: 1,
                       onChanged: (value) {
@@ -87,14 +88,15 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                     const SizedBox(
                       height: 24,
                     ),
-                    const Text(
+                    Text(
                       "Set Question Type",
                       style: TextStyle(
-                          fontFamily: "SF Pro Display",
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.35,
-                          color: Colors.white),
+                        fontFamily: "SF Pro Display",
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.35,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                     ),
                     const SizedBox(
                       height: 16,
@@ -102,12 +104,13 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                     Center(
                       child: Container(
                         width: double.infinity,
-                        color: const Color(0xff2C2C2E),
+                        color: Theme.of(context).colorScheme.surface,
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: DropdownButton<String>(
-                            dropdownColor: const Color(0xff1C1C1E),
-                            style: const TextStyle(
-                              color: Color(0x3CEBEBF5),
+                            dropdownColor:
+                                Theme.of(context).colorScheme.background,
+                            style: TextStyle(
+                              color: Colors.red,
                               letterSpacing: -0.41,
                               fontWeight: FontWeight.w400,
                               fontSize: 17,
@@ -119,8 +122,10 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                                     value: item,
                                     child: Text(
                                       item,
-                                      style: const TextStyle(
-                                        color: Color(0x3CEBEBF5),
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
                                         letterSpacing: -0.41,
                                         fontWeight: FontWeight.w400,
                                         fontSize: 17,
@@ -139,21 +144,22 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                     const SizedBox(
                       height: 24,
                     ),
-                    const Text(
+                    Text(
                       "Set Answers",
                       style: TextStyle(
-                          fontFamily: "SF Pro Display",
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.35,
-                          color: Colors.white),
+                        fontFamily: "SF Pro Display",
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.35,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                     ),
                     const SizedBox(
                       height: 16,
                     ),
                     Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xff2C2C2E),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.all(
                           Radius.circular(16),
                         ),
@@ -182,22 +188,26 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                                       return null;
                                     },
                                     keyboardType: TextInputType.emailAddress,
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       hintText: "set answer",
                                       filled: true,
-                                      fillColor: Color(0xff2C2C2E),
+                                      fillColor:
+                                          Theme.of(context).colorScheme.surface,
                                       border: InputBorder.none,
                                       hintStyle: TextStyle(
-                                        color: Color(0x3CEBEBF5),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
                                         letterSpacing: -0.41,
                                         fontWeight: FontWeight.w400,
                                         fontSize: 17,
                                         fontFamily: "SF Pro Text",
                                       ),
                                     ),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                    ),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface),
                                     maxLines: 1,
                                     onChanged: (value) {
                                       setState(() {
@@ -210,7 +220,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                             ],
                           ),
                           Container(
-                            color: const Color(0xff1C1C1E),
+                            color: Theme.of(context).colorScheme.background,
                             width: double.infinity,
                             height: 8,
                           ),
@@ -235,22 +245,26 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                                       return null;
                                     },
                                     keyboardType: TextInputType.emailAddress,
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       hintText: "set answer",
                                       filled: true,
-                                      fillColor: Color(0xff2C2C2E),
+                                      fillColor:
+                                          Theme.of(context).colorScheme.surface,
                                       border: InputBorder.none,
                                       hintStyle: TextStyle(
-                                        color: Color(0x3CEBEBF5),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
                                         letterSpacing: -0.41,
                                         fontWeight: FontWeight.w400,
                                         fontSize: 17,
                                         fontFamily: "SF Pro Text",
                                       ),
                                     ),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                    ),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface),
                                     maxLines: 1,
                                     onChanged: (value) {
                                       setState(() {
@@ -272,7 +286,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                       width: double.infinity,
                       height: 60,
                       decoration: BoxDecoration(
-                        color: const Color(0xff2C2C2E),
+                        color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: TextButton(
@@ -305,10 +319,10 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                                 .showSnackBar(snackBar);
                           }
                         },
-                        child: const Text(
+                        child: Text(
                           'Send Quiz',
                           style: TextStyle(
-                            color: Color(0xff0A84FF),
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                             fontFamily: "SF Pro Text",

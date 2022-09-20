@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants';
+
 class BlurryTitle extends StatelessWidget implements PreferredSizeWidget {
   const BlurryTitle({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -9,14 +11,15 @@ class BlurryTitle extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xff1C1C1E),
+      backgroundColor: Theme.of(context).colorScheme.background,
       title: Text(
         title,
-        style: const TextStyle(
-          fontFamily: "SF UI Display",
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+          fontSize: 24.0,
           fontWeight: FontWeight.w600,
-          fontSize: 24,
-          color: Colors.white,
+          fontFamily: "SF UI Display",
+          letterSpacing: -0.41,
         ),
       ),
       centerTitle: true,
@@ -24,10 +27,10 @@ class BlurryTitle extends StatelessWidget implements PreferredSizeWidget {
         onPressed: () {
           Navigator.pop(context);
         },
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back,
           size: 32,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onBackground,
         ),
       ),
     );

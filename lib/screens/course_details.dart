@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hyper_focus/screens/start_session_screen.dart';
 import '../screens/live_session.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -12,19 +13,21 @@ import '../services/buildgraph.dart';
 import '../widgets/blurry_title.dart';
 import 'live_stat.dart';
 import 'on_boarding_screen.dart';
+import '../constants';
+import 'package:image_stack/image_stack.dart';
 
 class CourseDetails extends StatefulWidget {
-  const CourseDetails(
-      {Key? key,
-      required this.courseName,
-      required this.instructorName,
-      required this.courseDate,
-      required this.instructorImage,
-      required this.courseID,
-      required this.courseDescription,
-      required this.courseColor,
-      required this.instructorID})
-      : super(key: key);
+  const CourseDetails({
+    Key? key,
+    required this.courseName,
+    required this.instructorName,
+    required this.courseDate,
+    required this.instructorImage,
+    required this.courseID,
+    required this.courseDescription,
+    required this.courseColor,
+    required this.instructorID,
+  }) : super(key: key);
 
   final String courseName;
   final String instructorName;
@@ -65,6 +68,7 @@ class _CourseDetailsState extends State<CourseDetails> {
   List<ChartData> attendanceData = [];
   List<ChartData> hyperFocusData = [];
   List<ChartData> popQuizData = [];
+  List<String> images = [];
 
   Stream getStatData() async* {
     yield await FirebaseFirestore.instance
@@ -87,19 +91,31 @@ class _CourseDetailsState extends State<CourseDetails> {
   Stream getActiveSession() async* {
     user = auth.currentUser;
     userID = user?.uid;
+    await FirebaseFirestore.instance
+        .collection("courses")
+        .doc(widget.courseID)
+        .collection('sessions')
+        .where("live", isEqualTo: true)
+        .get()
+        .then((results) {
+      querySnapshot = results;
+      if (querySnapshot != null) {
+        isLive = querySnapshot?.docs[0].get('live');
+        sessionDate = querySnapshot?.docs[0].get('session date');
+        sessionId = querySnapshot?.docs[0].id;
+        //print(sessionId);
+      }
+    });
     yield await FirebaseFirestore.instance
             .collection("courses")
             .doc(widget.courseID)
             .collection('sessions')
-            .where("live", isEqualTo: true)
+            .doc(sessionId)
+            .collection("participants")
             .get()
             .then((results) {
-          querySnapshot = results;
-          if (querySnapshot != null) {
-            isLive = querySnapshot?.docs[0].get('live');
-            sessionDate = querySnapshot?.docs[0].get('session date');
-            sessionId = querySnapshot?.docs[0].id;
-            //print(sessionId);
+          for (int i = 0; i < 3; i++) {
+            images.add(results.docs[i].get("imageUrl"));
           }
         }) ??
         false;
@@ -111,6 +127,20 @@ class _CourseDetailsState extends State<CourseDetails> {
     attendanceData.clear();
     hyperFocusData.clear();
     super.initState();
+  }
+
+  void onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        Clipboard.setData(ClipboardData(text: widget.courseID));
+        const snackBar = SnackBar(
+          content: Text('Course ID is copied to your clipboard'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        break;
+      case 1:
+        break;
+    }
   }
 
   @override
@@ -135,7 +165,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Color(colorMap[widget.courseColor]),
+                                  color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Padding(
@@ -162,11 +192,13 @@ class _CourseDetailsState extends State<CourseDetails> {
                                                 children: [
                                                   Text(
                                                     widget.courseName,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       fontSize: 32,
                                                       fontFamily:
                                                           "AvantGarde Bk BT",
-                                                      color: Colors.white,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurface,
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -211,6 +243,8 @@ class _CourseDetailsState extends State<CourseDetails> {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
+                                                              color:
+                                                                  Colors.black,
                                                             ),
                                                           ),
                                                         ],
@@ -222,23 +256,80 @@ class _CourseDetailsState extends State<CourseDetails> {
                                                   ),
                                                   Text(
                                                     widget.courseDate,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       fontFamily:
                                                           "SF UI Display",
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      color: Colors.white,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurface,
                                                     ),
                                                   )
                                                 ],
                                               ),
                                             ),
-                                            IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(Icons.more_vert,
-                                                  size: 24,
-                                                  color: Color(0xff1F89FD)),
+                                            PopupMenuButton<int>(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background,
+                                              onSelected: (item) =>
+                                                  onSelected(context, item),
+                                              icon: Icon(
+                                                Icons.more_vert,
+                                                size: 24,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                              itemBuilder: (context) => [
+                                                PopupMenuItem<int>(
+                                                  value: 0,
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.copy,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSurface),
+                                                      SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      Text(
+                                                        "Copy to clipboard",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .onSurface),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                PopupMenuItem<int>(
+                                                  value: 1,
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.settings,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSurface),
+                                                      const SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      Text(
+                                                        "Modify",
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .onSurface),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -253,10 +344,12 @@ class _CourseDetailsState extends State<CourseDetails> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            const Text(
+                                            Text(
                                               "Description",
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
                                                 fontWeight: FontWeight.w400,
                                                 fontFamily: "SF UI Display",
                                                 fontSize: 24,
@@ -268,8 +361,10 @@ class _CourseDetailsState extends State<CourseDetails> {
                                             ),
                                             Text(
                                               widget.courseDescription,
-                                              style: const TextStyle(
-                                                color: Colors.white,
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
                                                 fontWeight: FontWeight.w400,
                                                 fontFamily: "SF Pro Text",
                                                 fontSize: 14,
@@ -282,15 +377,17 @@ class _CourseDetailsState extends State<CourseDetails> {
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: const [
+                                        children: [
                                           Text(
                                             "14 Sessions",
                                             style: TextStyle(
                                               fontSize: 16,
-                                              color: Colors.white,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: "SF Pro Text",
                                               letterSpacing: -0.41,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                           ),
                                           SizedBox(
@@ -299,6 +396,9 @@ class _CourseDetailsState extends State<CourseDetails> {
                                           Image(
                                             image: AssetImage(
                                                 "assets/icons/Ellipse 72.png"),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
                                           ),
                                           SizedBox(
                                             width: 8,
@@ -307,7 +407,9 @@ class _CourseDetailsState extends State<CourseDetails> {
                                             "1 Hour",
                                             style: TextStyle(
                                               fontSize: 16,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: "SF Pro Text",
                                               letterSpacing: -0.41,
@@ -398,146 +500,110 @@ class _CourseDetailsState extends State<CourseDetails> {
                               if (isLive == true)
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: const Color(0xff2C2C2E),
+                                    color: Theme.of(context).primaryColor,
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  padding: const EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(16),
                                   child: Column(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 12,
-                                          bottom: 8.0,
-                                          left: 9,
-                                          right: 9,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: const [
-                                            Text(
-                                              "LIVE",
-                                              style: TextStyle(
-                                                color: Color(0xffFF3B30),
-                                                fontSize: 32,
-                                                fontFamily: "AvantGarde Bk BT",
-                                              ),
-                                            ),
-                                            Text(
-                                              "34:22",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: "SF Pro Text",
-                                                  letterSpacing: -0.41),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(
-                                            left: 16, right: 16, top: 16),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff1C1C1E),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    querySnapshot?.docs[0]
-                                                        .get("session title"),
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 24,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily:
-                                                            "SF UI Display",
-                                                        letterSpacing: -0.41),
-                                                  ),
-                                                ),
-                                                const Image(
-                                                  image: AssetImage(
-                                                      "assets/images/more people.png"),
-                                                )
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
-                                            IconButton(
-                                              onPressed: () {},
-                                              icon: const ImageIcon(
-                                                AssetImage(
-                                                  "assets/icons/chevrons-bottom.png",
-                                                ),
-                                                color: Colors.white,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            querySnapshot?.docs[0]
+                                                .get("session title"),
+                                            style: kHeader3TextStyle,
+                                          ),
+                                          Text(
+                                            "34:22",
+                                            style: kBodyBoldTextStyle,
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(
-                                        width: double.infinity,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            if (userID != widget.instructorID) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      OnBoardingScreen(
-                                                          courseName:
-                                                              widget.courseName,
-                                                          courseUID:
-                                                              widget.courseID,
-                                                          sessionId: sessionId),
-                                                ),
-                                              );
-                                            } else {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      LiveStat(
-                                                    courseName:
-                                                        widget.courseName,
-                                                    courseID: widget.courseID,
-                                                    sessionID: sessionId,
-                                                  ),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all(
-                                                const EdgeInsets.only(
-                                                    top: 16, bottom: 16)),
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                              const Color(0xff1C1C1E),
-                                            ),
+                                        height: 16,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ImageStack(
+                                            imageList: images,
+                                            totalCount: images
+                                                .length, // If larger than images.length, will show extra empty circle
+                                            imageRadius:
+                                                25, // Radius of each images
+                                            imageCount:
+                                                3, // Maximum number of images to be shown in stack
+                                            imageBorderWidth:
+                                                2, // Border width around the images
                                           ),
-                                          child: const Text(
-                                            "Join",
-                                            style: TextStyle(
-                                              color: Color(0xff0A84FF),
-                                              letterSpacing: -0.41,
-                                              fontFamily: "SF Pro Text",
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
+                                          SizedBox(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                if (userID !=
+                                                    widget.instructorID) {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          OnBoardingScreen(
+                                                              courseName: widget
+                                                                  .courseName,
+                                                              courseUID: widget
+                                                                  .courseID,
+                                                              sessionId:
+                                                                  sessionId),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LiveStat(
+                                                        courseName:
+                                                            widget.courseName,
+                                                        courseID:
+                                                            widget.courseID,
+                                                        sessionID: sessionId,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                              style: ButtonStyle(
+                                                padding:
+                                                    MaterialStateProperty.all(
+                                                        const EdgeInsets.only(
+                                                            top: 16,
+                                                            bottom: 16)),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                  Theme.of(context)
+                                                      .primaryColorDark,
+                                                ),
+                                                minimumSize:
+                                                    MaterialStateProperty.all(
+                                                        Size(116, 48)),
+                                              ),
+                                              child: Text(
+                                                "Join",
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary,
+                                                  letterSpacing: -0.41,
+                                                  fontFamily: "SF Pro Text",
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      )
+                                          )
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -546,7 +612,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: const Color(0xff2C2C2E),
+                                  color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Padding(
@@ -556,24 +622,31 @@ class _CourseDetailsState extends State<CourseDetails> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
+                                      Text(
                                         "Class Overview",
                                         style: TextStyle(
-                                          fontSize: 32,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                          fontSize: 32.0,
+                                          fontWeight: FontWeight.w700,
                                           fontFamily: "AvantGarde Bk BT",
-                                          color: Colors.white,
+                                          letterSpacing: -0.02,
                                         ),
                                       ),
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      const Text(
+                                      Text(
                                         "Your student’s average results",
                                         style: TextStyle(
-                                          fontFamily: "SF Pro Text",
-                                          fontSize: 14,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                          fontSize: 14.0,
                                           fontWeight: FontWeight.w400,
-                                          color: Colors.white,
+                                          fontFamily: "SF Pro Text",
+                                          letterSpacing: -0.24,
                                         ),
                                       ),
                                       const SizedBox(
@@ -582,7 +655,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                                       Container(
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          color: const Color(0xff1C1C1E),
+                                          color: Theme.of(context).cardColor,
                                           borderRadius:
                                               BorderRadius.circular(16),
                                         ),
@@ -596,18 +669,20 @@ class _CourseDetailsState extends State<CourseDetails> {
                                                 "Attendance",
                                                 attendanceData.isNotEmpty
                                                     ? attendanceData.last.y
-                                                    : 0),
+                                                    : 0,
+                                                context),
                                             buildStat(
                                                 "Hyper Focus",
                                                 hyperFocusData.isNotEmpty
                                                     ? hyperFocusData.last.y
-                                                    : 0),
+                                                    : 0,
+                                                context),
                                             buildStat(
-                                              "Pop Quiz",
-                                              popQuizData.isNotEmpty
-                                                  ? attendanceData.last.y
-                                                  : 0,
-                                            )
+                                                "Pop Quiz",
+                                                popQuizData.isNotEmpty
+                                                    ? attendanceData.last.y
+                                                    : 0,
+                                                context)
                                           ],
                                         ),
                                       ),
@@ -664,7 +739,7 @@ class _CourseDetailsState extends State<CourseDetails> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: const Color(0xff1C1C1E),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
       ),
       padding: const EdgeInsets.all(16),
@@ -687,16 +762,16 @@ class _CourseDetailsState extends State<CourseDetails> {
                 children: [
                   Text(
                     keyIndicator,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 32,
                       fontFamily: "AvantGarde Bk BT",
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   Text(
                     description,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontFamily: "SF Pro Text",
                       fontSize: 14,
                       fontWeight: FontWeight.normal,

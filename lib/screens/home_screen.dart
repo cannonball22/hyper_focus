@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import '../constants';
 import '../screens/courses_screen.dart';
@@ -73,3 +74,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+*/

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-Widget buildStat(String text, int value) {
+Widget buildStat(String text, int value, BuildContext context) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
@@ -42,12 +43,12 @@ Widget buildStat(String text, int value) {
                   GaugeAnnotation(
                       widget: Text(
                         "$value%",
-                        style: const TextStyle(
-                            fontSize: 23,
+                        style: TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             fontFamily: "SF UI Display",
                             letterSpacing: -0.41,
-                            color: Colors.white),
+                            color: Theme.of(context).colorScheme.onSurface),
                       ),
                       verticalAlignment: GaugeAlignment.far,
                       angle: 90,
@@ -58,8 +59,8 @@ Widget buildStat(String text, int value) {
           )),
       Text(
         text,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
           fontWeight: FontWeight.bold,
           fontSize: 16,
           fontFamily: "SF Pro Text",
@@ -70,8 +71,13 @@ Widget buildStat(String text, int value) {
   );
 }
 
-Widget insightsWidget(String keyIndicator, String description,
-    String performance, String smallDescription, List<ChartData> dataList) {
+Widget insightsWidget(
+    String keyIndicator,
+    String description,
+    String performance,
+    String smallDescription,
+    List<ChartData> dataList,
+    BuildContext context) {
   return Container(
     padding: const EdgeInsets.only(
       top: 16,
@@ -82,8 +88,8 @@ Widget insightsWidget(String keyIndicator, String description,
       children: [
         Text(
           keyIndicator,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontFamily: "SF Pro Display",
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -96,8 +102,8 @@ Widget insightsWidget(String keyIndicator, String description,
         Text(
           description,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontFamily: "SF Pro Text",
             fontSize: 14,
             fontWeight: FontWeight.normal,
@@ -109,8 +115,8 @@ Widget insightsWidget(String keyIndicator, String description,
         ),
         Text(
           performance,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontFamily: "SF Pro Display",
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -122,8 +128,8 @@ Widget insightsWidget(String keyIndicator, String description,
         ),
         Text(
           smallDescription,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontFamily: "SF Pro Text",
             fontSize: 14,
             fontWeight: FontWeight.bold,

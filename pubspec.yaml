@@ -50,6 +50,10 @@ dependencies:
   rxdart: ^0.27.5
   flutter_native_timezone: ^2.0.0
   expandable: ^5.0.1
+  external_app_launcher: ^3.1.0
+  cached_network_image: ^3.0.0
+  image_stack: ^2.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -57,17 +61,15 @@ dev_dependencies:
   flutter_native_splash: ^2.2.7
 
 flutter_native_splash:
-  background_image: assets/images/splash2.png
-  branding: assets/images/splash.png
-  branding_mode: center
+  image: assets/images/black.png
+  color: "#F5FAFF"
+  image_dark: assets/images/white.png
+  color_dark: "#1C1C1E"
+
 
 flutter:
 
   assets:
-    - assets/icons/Logo.svg
-    - assets/logo.png
-    - assets/logo.svg
-
     - assets/icons/facebook.png
     - assets/icons/external-link.png
     - assets/icons/user.png
@@ -88,8 +90,9 @@ flutter:
     - assets/icons/video.png
     - assets/icons/eye-no.png
     - assets/icons/google.png
-    - assets/images/more people.png
     - assets/icons/chevrons-bottom.png
+    - assets/icons/logo.svg
+    - assets/images/more people.png
     - assets/images/dr ahmed donkel.png
     - assets/images/no-profile-image-24.jpg
     - assets/images/placeholder.png

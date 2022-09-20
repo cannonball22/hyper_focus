@@ -1,4 +1,4 @@
-package com.example.hyper_focus
+package com.hyper.focus
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterFragmentActivity

@@ -70,7 +70,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
             ),
             FlatButton.icon(
               textColor: Theme.of(context).primaryColor,
-              icon: Icon(Icons.image),
+              icon: const Icon(Icons.image),
               label: Text('Add Image'),
               onPressed: getImageFromGallery,
             ),
