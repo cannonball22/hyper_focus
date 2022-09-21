@@ -1,9 +1,9 @@
 # Hyper Focus
 Attendance made easy!
 
-![image](https://user-images.githubusercontent.com/46242342/191626390-25c7f5cc-7b8b-4d41-8e98-ac0615a65375.png)
-
 ![image](https://user-images.githubusercontent.com/46242342/191626383-d7cb7034-9808-4115-a249-4a8bab5710f5.png)
+
+![image](https://user-images.githubusercontent.com/46242342/191626390-25c7f5cc-7b8b-4d41-8e98-ac0615a65375.png)
 
 ![image](https://user-images.githubusercontent.com/46242342/191626404-440cbc84-3ee3-46f9-9b3b-2429a914dd9d.png)
 
