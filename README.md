@@ -1,5 +1,6 @@
 # Hyper Focus
 Attendance made easy!
+Promo Video: https://youtu.be/iP6EHZvc4TM
 
 ![image](https://user-images.githubusercontent.com/46242342/191626383-d7cb7034-9808-4115-a249-4a8bab5710f5.png)
 
